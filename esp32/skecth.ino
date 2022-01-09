@@ -1,13 +1,14 @@
 #include <WiFiMulti.h>
 #include <HTTPClient.h>
 
-
 const char URL[] = "http://192.168.11.101/cgi/stream_buttons/index.rb";
 WiFiMulti wifiMulti;
 int input_val = 0;
 int button = 0;
-#define PIN 32 // 入力ピン
-#define LED_BUILTIN 2
+unsigned long l_time = 0;
+#define PIN 32         // 使用する ADC1 のアナログ入力ピン(ADC2 のピンは wifi が使えなくなるので使用不可)
+#define LED_BUILTIN 2  // ビルトインLEDピン
+#define COOL_TIME 1500 // 再処理禁止時間(ms) 
 
 void sendMessage();
 
@@ -19,7 +20,7 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   Serial.print("wifi connecting...\n");
   // Wi-Fi 接続 https://www.sglabs.jp/esp-wroom-02-wi-fi/
-  wifiMulti.addAP("aterm-xxxxxx-a", "12345678901234567890abcdef");
+  wifiMulti.addAP("ap_name", "password");
   while (wifiMulti.run() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
@@ -67,10 +68,11 @@ void loop() {
       break;
   }
   // なにかのボタンが押されている場合のみ実行
-  if (button != 0) {
+  // 且つ、一定時間は再処理を受け付けない
+  if (button != 0 && millis() - l_time > COOL_TIME) {
     sendMessage(button);
     brink_built_in_led(); // 送信完了をLED光らせて通知
-    delay(1500); // 再送禁止期間
+    l_time = millis();    // 処理した時間を記録
   }
 }
 
