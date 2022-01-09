@@ -5,13 +5,8 @@
 require 'bundler'
 Bundler.require
 # require 'bundler/setup'
-require 'active_support'
-require 'active_support/core_ext'
 require 'sinatra'
 require 'sqlite3'
-require 'logger'
-
-logger = Logger.new('log/sinatra.log')
 
 def db
   _db = SQLite3::Database.new('db/stream.db')
@@ -82,8 +77,6 @@ get '/' do
   when 7
     reset_data
   end
-
-  # logger.info select_data
 
   erb :index
 end
