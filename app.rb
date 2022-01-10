@@ -34,6 +34,15 @@ def select_data
   rows
 end
 
+def select_count(id)
+  count = nil
+  select_sql = 'SELECT count FROM data WHERE id = ?'
+  db.execute(select_sql, id) do |row|
+    count = row[0]
+  end
+  count
+end
+
 def increment_data(id)
   db.transaction do
     count = nil
@@ -67,7 +76,14 @@ def reset_data
   db.execute(update_sql)
 end
 
+require 'logger'
+logger = Logger.new('log/sinatra.log')
+
 get '/' do
+  id = params['id']
+  logger.info select_count(id)
+  return '%0.2d' % select_count(id) if id
+
   button = params['button'].to_i
   case button
   when 0

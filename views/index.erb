@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="60">
+  <meta http-equiv="refresh" content="6000">
   <title>Stream Button</title>
   <style type="text/css">
   <!--
@@ -13,9 +13,11 @@
   -->
   </style>
 </head>
+<script src="prototype.js"></script>
 <body>
+  <script type="text/javascript" src="autoload.js"></script>
   <table id="msgs">
-    <%= select_data.map { |id, count| "<tr><td><img src='public/#{id}.png' width='100' height='100'></td><td>#{ "%0.2d" % count }</td></tr>" }.join %>
+    <%= select_data.map { |id, count| "<tr><td><img src='public/#{id}.png' width='100' height='100'></td><td id='id#{id}'>#{ "%0.2d" % count }</td></tr>" }.join %>
   </table>
 </body>
 </html>
