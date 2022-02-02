@@ -16,11 +16,43 @@
   -->
   </style>
 </head>
-<script src="prototype.js"></script>
+<% if NGINX %>
+  <script type="text/javascript" src="public/prototype.js"></script>
+<% else %>
+  <script type="text/javascript" src="prototype.js"></script>
+<% end %>
 <body>
-  <script type="text/javascript" src="autoload.js"></script>
+  <script type="text/javascript">
+    <% (1..7).each do |id| %>
+      new Ajax.PeriodicalUpdater(
+        "id<%= id %>",
+        "<%= request.path_info %>",
+        {
+          "method": "get",
+          "parameters": "id=<%= id %>",
+          frequency: 5, // N秒ごとに実行
+          onSuccess: function(request) {
+            // 成功時
+          },
+          onComplete: function(request) {
+            // 完了時
+          },
+          onFailure: function(request) {
+            console.log('読み込みに失敗しました');
+          },
+          onException: function (request) {
+            console.log('読み込み中にエラーが発生しました');
+          }
+        }
+      );
+    <% end %>
+  </script>
   <table id="msgs">
+    <% if NGINX %>
     <%= select_data.map { |id, count| "<tr><td><img src='public/#{id}.png' width='100' height='100'></td><td id='id#{id}'>#{ "%0.2d" % count }</td></tr>" }.join %>
+    <% else %>
+    <%= select_data.map { |id, count| "<tr><td><img src='#{id}.png' width='100' height='100'></td><td id='id#{id}'>#{ "%0.2d" % count }</td></tr>" }.join %>
+    <% end %>
   </table>
 </body>
 </html>

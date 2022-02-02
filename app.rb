@@ -1,5 +1,3 @@
-#!/home/nagonago/.rbenv/versions/2.7.4/bin/ruby
-# #!/usr/bin/ruby
 # encoding: utf-8
 
 require 'bundler'
@@ -7,6 +5,8 @@ Bundler.require
 # require 'bundler/setup'
 require 'sinatra'
 require 'sqlite3'
+
+NGINX = false
 
 def db
   _db = SQLite3::Database.new('db/stream.db')
@@ -79,12 +79,8 @@ def reset_data
   db.execute(update_sql)
 end
 
-require 'logger'
-logger = Logger.new('log/sinatra.log')
-
 get '/' do
   id = params['id']
-  logger.info select_count(id)
   return '%0.2d' % select_count(id) if id
 
   button = params['button'].to_i

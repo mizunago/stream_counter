@@ -2,6 +2,7 @@
 
 APP_HOME = __dir__
 load "#{APP_HOME}/app.rb"
+NGINX = true
 set :run, false
 
 Rack::Handler::CGI.run Sinatra::Application
