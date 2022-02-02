@@ -1,16 +1,14 @@
 #include <WiFiMulti.h>
 #include <HTTPClient.h>
 
-const char URL[] = "http://192.168.11.101/cgi/stream_buttons/index.rb";
+const char URL[] = "http://example.com/";
 WiFiMulti wifiMulti;
-int input_val = 0;
-int button = 0;
+unsigned int input_val = 0;
+unsigned int button = 0;
 unsigned long l_time = 0;
 #define PIN 32         // 使用する ADC1 のアナログ入力ピン(ADC2 のピンは wifi が使えなくなるので使用不可)
 #define LED_BUILTIN 2  // ビルトインLEDピン
-#define COOL_TIME 1500 // 再処理禁止時間(ms) 
-
-void sendMessage();
+#define COOL_TIME 500  // 再処理禁止時間(ms)
 
 void setup() {
   Serial.begin(115200); // このシリアル通信はモニター用
@@ -26,6 +24,7 @@ void setup() {
     Serial.print(".");
   }
   Serial.print("wifi connected\n");
+  blynkBuiltInLed();
 }
 
 void loop() {
@@ -76,8 +75,8 @@ void loop() {
   }
 }
 
-void brink_built_in_led() {
-  for (int i = 0; i <= 3; i++) {
+void blynkBuiltInLed() {
+  for (int i = 0; i < 3; i++) {
     digitalWrite(LED_BUILTIN, HIGH);
     delay(100);
     digitalWrite(LED_BUILTIN, LOW);
@@ -86,12 +85,10 @@ void brink_built_in_led() {
 }
 
 void sendMessage(int button) {
-  WiFiClientSecure client;
   HTTPClient http;
   // http.begin(URL);
   http.begin(String(URL) + "?button=" + String(button));
   Serial.print(button);
-
   int httpCode = http.GET();
 
   Serial.printf("Response: %d", httpCode);
@@ -101,6 +98,7 @@ void sendMessage(int button) {
     Serial.print("Response Body: ");
     Serial.println(body);
   }
+  http.end();
 
   Serial.println("closing connection");
 }

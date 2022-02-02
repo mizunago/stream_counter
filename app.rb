@@ -16,9 +16,12 @@ def db
       count INTEGER default '0'
     );
   SQL
+  insert_sql = 'INSERT INTO data VALUES(1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0)'
 
   begin
     _db.execute(sql)
+    _db.execute(insert_sql)
+
   rescue SQLite3::SQLException => e
     raise if e.message != 'table data already exists'
   end
