@@ -1,0 +1,7 @@
+version: '3'
+services:
+  stream_buttons:
+    build: .
+    tty: true
+    ports:
+      - '4567:4567'
