@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require 'bundler'
 Bundler.require
 # require 'bundler/setup'
@@ -21,7 +19,6 @@ def db
   begin
     _db.execute(sql)
     _db.execute(insert_sql)
-
   rescue SQLite3::SQLException => e
     raise if e.message != 'table data already exists'
   end
