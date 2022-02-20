@@ -22,7 +22,7 @@
 <% end %>
 <body>
   <script type="text/javascript">
-    <% (1..7).each do |id| %>
+    <% (1..6).each do |id| %>
       new Ajax.PeriodicalUpdater(
         "id<%= id %>",
         "<%= request.path_info %>",
