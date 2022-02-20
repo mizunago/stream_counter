@@ -16,14 +16,14 @@ void setup() {
 
   pinMode(PIN, INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
-  Serial.print("wifi connecting...\n");
+  Serial.println("wifi connecting...");
   // Wi-Fi 接続 https://www.sglabs.jp/esp-wroom-02-wi-fi/
   wifiMulti.addAP("ap_name", "password");
   while (wifiMulti.run() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
-  Serial.print("wifi connected\n");
+  Serial.println("wifi connected");
   blynkBuiltInLed();
 }
 
@@ -31,39 +31,38 @@ void loop() {
   // ボタンは何も押されていない初期状態に更新
   button = 0;
   input_val = analogRead(PIN);
-  //Serial.print(input_val);
-  //Serial.print("\n");
+  //Serial.println(input_val);
   switch (input_val) {
     case 0 ... 32:
-      Serial.print("Killed a pirate.\n");
+      Serial.println("Killed a pirate.");
       button = 1;
       break;
     case 50 ... 100:
-      Serial.print("Sunk a sloop.\n");
+      Serial.println("Sunk a sloop.");
       button = 2;
       break;
     case 300 ... 400:
-      Serial.print("Sunk a brig.\n");
+      Serial.println("Sunk a brig.");
       button = 3;
       break;
     case 600 ... 700:
-      Serial.print("Sunk a galleon.\n");
+      Serial.println("Sunk a galleon.");
       button = 4;
       break;
     case 1000 ... 1300:
-      Serial.print("Ship has sunk.\n");
+      Serial.println("Ship has sunk.");
       button = 5;
       break;
     case 1700 ... 2000:
-      Serial.print("A pirate killed.\n");
+      Serial.println("A pirate killed.");
       button = 6;
       break;
     case 2700 ... 3000:
-      Serial.print("Counter was reset.\n");
+      Serial.println("Counter was reset.");
       button = 7;
       break;
-    case 4000 ... 4096:
-      //Serial.print("None of the buttons were pressed.\n");
+    case 4000 ... 4095:
+      Serial.println("None of the buttons were pressed.");
       break;
   }
   // なにかのボタンが押されている場合のみ実行
