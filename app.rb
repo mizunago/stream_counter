@@ -84,8 +84,10 @@ get '/' do
     # nothing to do. read only
   when 1..6
     increment_data(button)
+    return 'ok'
   when 7
     reset_data
+    return 'ok'
   end
 
   erb :index
