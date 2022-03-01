@@ -72,8 +72,6 @@ end
 def reset_data
   update_sql = 'UPDATE data SET count = 0'
   db.execute(update_sql)
-  update_sql = 'DELETE FROM data WHERE id NOT BETWEEN 1 AND 6'
-  db.execute(update_sql)
 end
 
 get '/' do
